@@ -16,7 +16,7 @@
      <!-- Fonts -->
      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
      <!-- Icons -->
-     <link rel="stylesheet" href="https://infyportfolio.infyom.com/vendor/nucleo/css/nucleo.css" type="text/css">
+     <link rel="stylesheet" href="{{ asset('backend-assets/fonts/nucleo-icons.woff2') }}">
      <link rel="stylesheet" href="https://infyportfolio.infyom.com/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
 
      <!-- General CSS Files -->
@@ -48,7 +48,7 @@
             </svg>
         </div>
     </div>
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -100,11 +100,11 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav> --}}
 
-        <main class="py-4">
+        <div class="container mt--8 pb-5">
             @yield('content')
-        </main>
+        </div>
     </div>
     <!-- Scripts -->
 <script src="https://infyportfolio.infyom.com/vendor/jquery/dist/jquery.min.js"></script>
@@ -113,7 +113,5 @@
 <script src="https://infyportfolio.infyom.com/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
 <script src="https://infyportfolio.infyom.com/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
 <script src="https://infyportfolio.infyom.com/js/argon.js?v=1.2.0"></script>
-
-    <script src="/assets/js/login/login.js?id=a0d17d93a123f4b444ff5fc9064c68a2"></script>
 </body>
 </html>

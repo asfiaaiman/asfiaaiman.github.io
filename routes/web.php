@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\{
+    admin\DashboardController
+};
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware'=>['auth'],'as'=>'admin.'], function(){
+
+    Route::get('/dashboard', [App\Http\Controllers\admin\DashboardController::class, 'index'])->name('admin.dashboard.index');
+
+});
