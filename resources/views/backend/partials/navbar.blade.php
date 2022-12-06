@@ -39,7 +39,7 @@
 
 
                     <li class="nav-item side-menus active">
-    <a class="nav-link" href="https://infyportfolio.infyom.com/users/1/edit">
+    <a class="nav-link" href="{{ route('admin.user.edit') }}">
         <i class="fas fa-user big_size_icon  text-white"></i>
         <span class="nav-link-text custom_disabled_span ">Profile</span>
     </a>

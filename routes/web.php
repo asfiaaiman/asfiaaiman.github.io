@@ -2,9 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{
-    admin\DashboardController
-};
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +18,8 @@ Auth::routes();
 
 Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware'=>['auth'],'as'=>'admin.'], function(){
 
-    Route::get('/dashboard', [App\Http\Controllers\admin\DashboardController::class, 'index'])->name('admin.dashboard.index');
-
+    Route::get('dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard.index');
+    Route::get('users/edit', [App\Http\Controllers\Admin\UserController::class, 'edit'])->name('user.edit');
 });
+
+
