@@ -6,145 +6,1509 @@
 
     <title>Asfia Aiman | Software Engineer</title>
 
-    <meta name="description" content="Personal portfolio of Asfia Aiman, Software Engineer.">
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    >
+
+    <style>
+        :root {
+            --map-bg: #eef3f7;
+            --road: #ffffff;
+            --road-border: #d7dde3;
+            --primary: #1a73e8;
+            --primary-dark: #1558b0;
+            --text: #202124;
+            --muted: #6b7280;
+            --card: rgba(255,255,255,.94);
+            --green: #34a853;
+            --orange: #fbbc04;
+            --red: #ea4335;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            color: var(--text);
+            background: var(--map-bg);
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           MAP BACKGROUND
+        ========================================= */
+
+        .map {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            background:
+                linear-gradient(rgba(255,255,255,.45) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.45) 1px, transparent 1px),
+                #e9f0f3;
+            background-size: 70px 70px;
+        }
+
+        .map::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(52,168,83,.12), transparent 18%),
+                radial-gradient(circle at 80% 15%, rgba(26,115,232,.12), transparent 20%),
+                radial-gradient(circle at 75% 80%, rgba(251,188,4,.12), transparent 20%);
+            pointer-events: none;
+        }
+
+        .map-water {
+            position: absolute;
+            width: 800px;
+            height: 500px;
+            right: -250px;
+            top: 200px;
+            background: #dceef8;
+            border-radius: 48% 52% 45% 55%;
+            transform: rotate(-12deg);
+            opacity: .65;
+        }
+
+        .map-park {
+            position: absolute;
+            width: 500px;
+            height: 350px;
+            left: -200px;
+            bottom: 100px;
+            background: #dff1df;
+            border-radius: 50%;
+            opacity: .75;
+        }
+
+        /* =========================================
+           NAVIGATION BAR
+        ========================================= */
+
+        .map-navbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(1100px, calc(100% - 30px));
+            z-index: 1000;
+
+            background: rgba(255,255,255,.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            border: 1px solid rgba(255,255,255,.7);
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.12);
+        }
+
+        .brand {
+            font-weight: 800;
+            letter-spacing: -.5px;
+            color: var(--text);
+        }
+
+        .brand-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin-right: 7px;
+            box-shadow: 0 0 0 5px rgba(26,115,232,.12);
+        }
+
+        .nav-link {
+            color: #555 !important;
+            font-weight: 500;
+            font-size: .9rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        /* =========================================
+           HERO
+        ========================================= */
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            padding: 120px 20px 80px;
+        }
+
+        .hero-content {
+            max-width: 720px;
+        }
+
+        .location-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 15px;
+            background: rgba(255,255,255,.85);
+            border-radius: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.08);
+            font-size: .85rem;
+            margin-bottom: 22px;
+        }
+
+        .location-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 0 5px rgba(52,168,83,.12);
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 6.5rem);
+            line-height: .92;
+            font-weight: 800;
+            letter-spacing: -5px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #5f6368;
+            max-width: 650px;
+        }
+
+        .hero-buttons {
+            margin-top: 35px;
+        }
+
+        .btn-map {
+            background: var(--primary);
+            color: white;
+            border-radius: 30px;
+            padding: 13px 23px;
+            font-weight: 600;
+            border: none;
+            box-shadow: 0 8px 20px rgba(26,115,232,.25);
+        }
+
+        .btn-map:hover {
+            background: var(--primary-dark);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-map {
+            border: 1px solid #cbd1d7;
+            background: rgba(255,255,255,.8);
+            border-radius: 30px;
+            padding: 13px 23px;
+            font-weight: 600;
+        }
+
+        /* =========================================
+           FLOATING MAP CONTROLS
+        ========================================= */
+
+        .map-controls {
+            position: absolute;
+            right: 30px;
+            top: 120px;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .map-control {
+            width: 46px;
+            height: 46px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,.92);
+            box-shadow: 0 5px 20px rgba(0,0,0,.12);
+            color: #555;
+        }
+
+        .map-control:hover {
+            color: var(--primary);
+        }
+
+        /* =========================================
+           STATS
+        ========================================= */
+
+        .stats {
+            position: relative;
+            z-index: 3;
+            margin-bottom: 100px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 10px 35px rgba(0,0,0,.08);
+            height: 100%;
+            transition: .3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 40px rgba(0,0,0,.12);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        /* =========================================
+           JOURNEY
+        ========================================= */
+
+        .journey-section {
+            position: relative;
+            z-index: 3;
+            padding: 80px 0 150px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 90px;
+        }
+
+        .section-title .small-title {
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: .75rem;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-top: 10px;
+        }
+
+        .section-title p {
+            color: var(--muted);
+            max-width: 600px;
+            margin: 15px auto 0;
+        }
+
+        /* Route container */
+
+        .route {
+            position: relative;
+            max-width: 1050px;
+            margin: auto;
+            padding: 20px 0;
+        }
+
+        /* Main road */
+
+        .route-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 28px;
+            transform: translateX(-50%);
+            background: var(--road-border);
+            border-radius: 30px;
+            box-shadow:
+                inset 0 0 0 6px rgba(255,255,255,.7);
+        }
+
+        .route-line::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            transform: translateX(-50%);
+            background:
+                repeating-linear-gradient(
+                    to bottom,
+                    #fff 0,
+                    #fff 35px,
+                    transparent 35px,
+                    transparent 65px
+                );
+        }
+
+        /* Animated travelling dot */
+
+        .travelling-marker {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 22px;
+            height: 22px;
+            transform: translateX(-50%);
+            background: var(--primary);
+            border: 4px solid white;
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow:
+                0 4px 15px rgba(26,115,232,.5),
+                0 0 0 8px rgba(26,115,232,.12);
+
+            animation: travel 12s linear infinite;
+        }
+
+        @keyframes travel {
+            0% {
+                top: 0;
+            }
+
+            100% {
+                top: calc(100% - 22px);
+            }
+        }
+
+        /* =========================================
+           STOPS
+        ========================================= */
+
+        .stop {
+            position: relative;
+            width: 50%;
+            padding: 35px 55px;
+            min-height: 230px;
+        }
+
+        .stop:nth-child(odd) {
+            margin-right: auto;
+            text-align: right;
+        }
+
+        .stop:nth-child(even) {
+            margin-left: 50%;
+        }
+
+        .stop-card {
+            background: rgba(255,255,255,.94);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 12px 35px rgba(0,0,0,.08);
+            transition: .4s;
+            position: relative;
+        }
+
+        .stop-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 50px rgba(0,0,0,.13);
+        }
+
+        .stop:nth-child(odd) .stop-card {
+            border-right: 4px solid var(--primary);
+        }
+
+        .stop:nth-child(even) .stop-card {
+            border-left: 4px solid var(--primary);
+        }
+
+        .pin {
+            position: absolute;
+            top: 45px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50% 50% 50% 0;
+            background: var(--primary);
+            transform: rotate(-45deg);
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,.2);
+            z-index: 4;
+        }
+
+        .pin::after {
+            content: "";
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            left: 4px;
+            top: 4px;
+        }
+
+        .stop:nth-child(odd) .pin {
+            right: -11px;
+        }
+
+        .stop:nth-child(even) .pin {
+            left: -11px;
+        }
+
+        .stop-date {
+            color: var(--primary);
+            font-size: .78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stop-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            margin: 8px 0;
+        }
+
+        .stop-company {
+            color: var(--muted);
+            font-size: .9rem;
+            margin-bottom: 14px;
+        }
+
+        .stop-description {
+            color: #60666d;
+            line-height: 1.7;
+            font-size: .9rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 5px 9px;
+            background: #eef5ff;
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: .72rem;
+            margin: 3px;
+            font-weight: 600;
+        }
+
+        /* =========================================
+           PROJECTS
+        ========================================= */
+
+        .projects-section {
+            padding: 100px 0;
+            background: rgba(255,255,255,.4);
+            position: relative;
+            z-index: 3;
+        }
+
+        .project-card {
+            height: 100%;
+            background: white;
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(0,0,0,.07);
+            transition: .35s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            right: -40px;
+            top: -40px;
+            background: rgba(26,115,232,.08);
+            border-radius: 50%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,.12);
+        }
+
+        .project-icon {
+            width: 52px;
+            height: 52px;
+            display: grid;
+            place-items: center;
+            background: #eef5ff;
+            color: var(--primary);
+            border-radius: 15px;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+
+        .project-card h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .project-card p {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: .9rem;
+        }
+
+        /* =========================================
+           SKILLS MAP
+        ========================================= */
+
+        .skills-section {
+            padding: 120px 0;
+            position: relative;
+            z-index: 3;
+        }
+
+        .skill-map {
+            max-width: 900px;
+            margin: auto;
+            position: relative;
+            min-height: 420px;
+        }
+
+        .skill-node {
+            position: absolute;
+            padding: 13px 18px;
+            border-radius: 30px;
+            background: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,.1);
+            font-weight: 600;
+            font-size: .85rem;
+            transition: .3s;
+        }
+
+        .skill-node:hover {
+            transform: scale(1.1);
+            color: var(--primary);
+        }
+
+        .skill-center {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 25px 30px;
+            background: var(--primary);
+            color: white;
+            font-size: 1rem;
+            z-index: 3;
+        }
+
+        .skill-center:hover {
+            color: white;
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .skill-node:nth-child(2) {
+            left: 8%;
+            top: 15%;
+        }
+
+        .skill-node:nth-child(3) {
+            left: 20%;
+            bottom: 15%;
+        }
+
+        .skill-node:nth-child(4) {
+            right: 12%;
+            top: 10%;
+        }
+
+        .skill-node:nth-child(5) {
+            right: 5%;
+            bottom: 20%;
+        }
+
+        .skill-node:nth-child(6) {
+            left: 42%;
+            top: 5%;
+        }
+
+        .skill-node:nth-child(7) {
+            left: 43%;
+            bottom: 4%;
+        }
+
+        /* =========================================
+           CONTACT
+        ========================================= */
+
+        .contact-section {
+            padding: 120px 0;
+            position: relative;
+            z-index: 3;
+        }
+
+        .destination {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            border-radius: 28px;
+            padding: 60px;
+            box-shadow: 0 20px 70px rgba(0,0,0,.1);
+            text-align: center;
+        }
+
+        .destination-pin {
+            width: 70px;
+            height: 70px;
+            background: var(--red);
+            color: white;
+            display: grid;
+            place-items: center;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            margin: 0 auto 30px;
+            font-size: 1.6rem;
+            box-shadow: 0 10px 30px rgba(234,67,53,.25);
+        }
+
+        .destination-pin i {
+            transform: rotate(45deg);
+        }
+
+        .destination h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        .destination p {
+            color: var(--muted);
+            max-width: 550px;
+            margin: 15px auto 30px;
+        }
+
+        .contact-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin: 5px;
+            padding: 10px 16px;
+            border-radius: 30px;
+            background: #f3f6f8;
+            color: #444;
+            text-decoration: none;
+            font-size: .85rem;
+            transition: .3s;
+        }
+
+        .contact-links a:hover {
+            background: #e8f0fe;
+            color: var(--primary);
+        }
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        footer {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            padding: 30px 20px;
+            color: #777;
+            font-size: .8rem;
+        }
+
+        /* =========================================
+           ANIMATIONS
+        ========================================= */
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp .8s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: .15s;
+        }
+
+        .delay-2 {
+            animation-delay: .3s;
+        }
+
+        .delay-3 {
+            animation-delay: .45s;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(26,115,232,.35);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(26,115,232,0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(26,115,232,0);
+            }
+        }
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 768px) {
+
+            .hero {
+                padding-top: 150px;
+            }
+
+            .hero h1 {
+                letter-spacing: -3px;
+            }
+
+            .map-controls {
+                display: none;
+            }
+
+            .route-line {
+                left: 25px;
+            }
+
+            .travelling-marker {
+                left: 25px;
+            }
+
+            .stop {
+                width: 100%;
+                margin-left: 0 !important;
+                padding: 25px 20px 25px 70px;
+                text-align: left !important;
+            }
+
+            .stop:nth-child(odd) .stop-card {
+                border-right: none;
+                border-left: 4px solid var(--primary);
+            }
+
+            .stop:nth-child(odd) .pin,
+            .stop:nth-child(even) .pin {
+                left: -56px;
+                right: auto;
+            }
+
+            .skill-map {
+                min-height: 500px;
+            }
+
+            .skill-node:nth-child(2) {
+                left: 2%;
+                top: 10%;
+            }
+
+            .skill-node:nth-child(3) {
+                left: 2%;
+                bottom: 10%;
+            }
+
+            .skill-node:nth-child(4) {
+                right: 2%;
+                top: 10%;
+            }
+
+            .skill-node:nth-child(5) {
+                right: 2%;
+                bottom: 10%;
+            }
+
+            .skill-node:nth-child(6) {
+                left: 35%;
+                top: 2%;
+            }
+
+            .skill-node:nth-child(7) {
+                left: 35%;
+                bottom: 2%;
+            }
+
+            .destination {
+                padding: 40px 25px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- Header -->
-    <header>
-        <nav>
-            <a href="/">Asfia Aiman</a>
+<div class="map">
 
-            <div>
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-                <a href="#experience">Experience</a>
-                <a href="#contact">Contact</a>
+    <div class="map-water"></div>
+    <div class="map-park"></div>
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
+    <nav class="navbar navbar-expand-lg map-navbar px-3 py-2">
+
+        <div class="container-fluid">
+
+            <a class="navbar-brand brand" href="#">
+                <span class="brand-dot"></span>
+                Asfia Aiman
+            </a>
+
+            <button
+                class="navbar-toggler border-0"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navigation"
+            >
+                <i class="bi bi-list fs-3"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navigation">
+
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#journey">
+                            Journey
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#projects">
+                            Projects
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#skills">
+                            Skills
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#contact">
+                            Contact
+                        </a>
+                    </li>
+
+                </ul>
+
             </div>
-        </nav>
-    </header>
+
+        </div>
+
+    </nav>
 
 
-    <main>
+    <!-- =========================================
+         MAP CONTROLS
+    ========================================== -->
 
-        <!-- Hero -->
-        <section id="hero">
-            <h1>Hi, I'm Asfia Aiman</h1>
+    <div class="map-controls">
 
-            <h2>Software Engineer</h2>
+        <button class="map-control" title="Zoom in">
+            <i class="bi bi-plus-lg"></i>
+        </button>
 
-            <p>
-                I build web applications and backend systems
-                using modern technologies.
-            </p>
+        <button class="map-control" title="Zoom out">
+            <i class="bi bi-dash-lg"></i>
+        </button>
 
-            <a href="#projects">View My Work</a>
-        </section>
+        <button class="map-control" title="My location">
+            <i class="bi bi-crosshair"></i>
+        </button>
 
-
-        <!-- About -->
-        <section id="about">
-            <h2>About Me</h2>
-
-            <p>
-                Write a short introduction about yourself here.
-            </p>
-        </section>
+    </div>
 
 
-        <!-- Skills -->
-        <section id="skills">
-            <h2>Skills</h2>
+    <!-- =========================================
+         HERO
+    ========================================== -->
 
-            <ul>
-                <li>PHP</li>
-                <li>Laravel</li>
-                <li>MySQL</li>
-                <li>JavaScript</li>
-                <li>Python</li>
-                <li>Git</li>
-            </ul>
-        </section>
+    <section class="hero">
 
+        <div class="container">
 
-        <!-- Projects -->
-        <section id="projects">
-            <h2>Projects</h2>
+            <div class="hero-content">
 
-            <article>
-                <h3>Project Name</h3>
+                <div class="location-badge fade-up">
+                    <span class="location-dot"></span>
+                    Islamabad, Pakistan
+                </div>
 
-                <p>
-                    Short description of the project.
+                <h1 class="fade-up delay-1">
+                    Hi, I'm<br>
+                    <span>Asfia.</span>
+                </h1>
+
+                <p class="fade-up delay-2">
+                    Software Engineer building scalable backend systems,
+                    Laravel applications and exploring the world of
+                    Machine Learning & Artificial Intelligence.
                 </p>
 
-                <a href="#">View Project</a>
-            </article>
+                <div class="hero-buttons fade-up delay-3">
 
-            <article>
-                <h3>Project Name</h3>
+                    <a href="#journey" class="btn btn-map me-2">
+                        <i class="bi bi-signpost-2 me-2"></i>
+                        Start Journey
+                    </a>
+
+                    <a href="#projects" class="btn btn-outline-map">
+                        Explore Projects
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         STATS
+    ========================================== -->
+
+    <section class="stats">
+
+        <div class="container">
+
+            <div class="row g-4">
+
+                <div class="col-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="stat-number">5+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="stat-number">PHP</div>
+                        <div class="stat-label">Backend Engineering</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="stat-number">Laravel</div>
+                        <div class="stat-label">Primary Framework</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="stat-number">AI</div>
+                        <div class="stat-label">Next Destination</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         JOURNEY
+    ========================================== -->
+
+    <section id="journey" class="journey-section">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <div class="small-title">
+                    Your route
+                </div>
+
+                <h2>
+                    The journey so far
+                </h2>
 
                 <p>
-                    Short description of the project.
+                    Every career has a route. Mine just happens to involve
+                    Laravel, databases, questionable debugging sessions,
+                    and an eventual detour into AI.
                 </p>
 
-                <a href="#">View Project</a>
-            </article>
-        </section>
+            </div>
 
 
-        <!-- Experience -->
-        <section id="experience">
-            <h2>Experience</h2>
+            <div class="route">
 
-            <article>
-                <h3>Senior Software Engineer</h3>
+                <div class="route-line"></div>
 
-                <p>Company Name | 2024 - Present</p>
+                <div class="travelling-marker"></div>
+
+
+                <!-- STOP 1 -->
+
+                <div class="stop">
+
+                    <div class="pin"></div>
+
+                    <div class="stop-card">
+
+                        <div class="stop-date">
+                            2013 → 2017
+                        </div>
+
+                        <div class="stop-title">
+                            Software Engineering
+                        </div>
+
+                        <div class="stop-company">
+                            Fatima Jinnah Women University
+                        </div>
+
+                        <div class="stop-description">
+                            Started the journey with a degree in
+                            Software Engineering, building the foundation
+                            for everything that followed.
+                        </div>
+
+                        <div class="mt-3">
+                            <span class="tag">Software Engineering</span>
+                            <span class="tag">Programming</span>
+                            <span class="tag">Databases</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STOP 2 -->
+
+                <div class="stop">
+
+                    <div class="pin"></div>
+
+                    <div class="stop-card">
+
+                        <div class="stop-date">
+                            2023 → 2024
+                        </div>
+
+                        <div class="stop-title">
+                            Backend Engineer
+                        </div>
+
+                        <div class="stop-company">
+                            Cairo House
+                        </div>
+
+                        <div class="stop-description">
+                            Worked on production web applications,
+                            backend architecture, APIs and database-driven
+                            systems using PHP and Laravel.
+                        </div>
+
+                        <div class="mt-3">
+                            <span class="tag">PHP</span>
+                            <span class="tag">Laravel</span>
+                            <span class="tag">MySQL</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STOP 3 -->
+
+                <div class="stop">
+
+                    <div class="pin"></div>
+
+                    <div class="stop-card">
+
+                        <div class="stop-date">
+                            2024 → Present
+                        </div>
+
+                        <div class="stop-title">
+                            Senior Laravel Developer
+                        </div>
+
+                        <div class="stop-company">
+                            DecisionHub 360
+                        </div>
+
+                        <div class="stop-description">
+                            Building and maintaining a large Laravel
+                            platform involving property transactions,
+                            packages, approvals, analytics and
+                            third-party integrations.
+                        </div>
+
+                        <div class="mt-3">
+                            <span class="tag">Laravel 11</span>
+                            <span class="tag">PHP 8.2</span>
+                            <span class="tag">MySQL</span>
+                            <span class="tag">jQuery</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STOP 4 -->
+
+                <div class="stop">
+
+                    <div class="pin"></div>
+
+                    <div class="stop-card">
+
+                        <div class="stop-date">
+                            2026
+                        </div>
+
+                        <div class="stop-title">
+                            AI & Machine Learning
+                        </div>
+
+                        <div class="stop-company">
+                            New Destination
+                        </div>
+
+                        <div class="stop-description">
+                            Expanding beyond traditional backend
+                            engineering into Python, Machine Learning,
+                            Data Science and Artificial Intelligence.
+                        </div>
+
+                        <div class="mt-3">
+                            <span class="tag">Python</span>
+                            <span class="tag">Machine Learning</span>
+                            <span class="tag">Data Science</span>
+                            <span class="tag">AI</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         PROJECTS
+    ========================================== -->
+
+    <section id="projects" class="projects-section">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <div class="small-title">
+                    Destinations
+                </div>
+
+                <h2>
+                    Places I've built
+                </h2>
 
                 <p>
-                    Brief description of your responsibilities
-                    and achievements.
+                    A few of the systems and ideas that made the journey
+                    considerably more interesting.
                 </p>
-            </article>
-        </section>
+
+            </div>
 
 
-        <!-- Contact -->
-        <section id="contact">
-            <h2>Contact</h2>
+            <div class="row g-4">
 
-            <p>
-                Email:
-                <a href="mailto:your@email.com">
-                    your@email.com
-                </a>
-            </p>
+                <!-- PROJECT -->
 
-            <p>
-                <a href="https://github.com/asfiaaiman">
-                    GitHub
-                </a>
-            </p>
+                <div class="col-md-6 col-lg-4">
 
-            <p>
-                <a href="https://www.linkedin.com/">
-                    LinkedIn
-                </a>
-            </p>
-        </section>
+                    <div class="project-card">
 
-    </main>
+                        <div class="project-icon">
+                            <i class="bi bi-building"></i>
+                        </div>
+
+                        <h3>
+                            DHA360
+                        </h3>
+
+                        <p>
+                            Real-estate platform involving property
+                            listings, transactions, approvals, packages,
+                            analytics and third-party integrations.
+                        </p>
+
+                        <div>
+                            <span class="tag">Laravel</span>
+                            <span class="tag">PHP</span>
+                            <span class="tag">MySQL</span>
+                        </div>
+
+                    </div>
+
+                </div>
 
 
-    <!-- Footer -->
+                <!-- PROJECT -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="project-card">
+
+                        <div class="project-icon">
+                            <i class="bi bi-hospital"></i>
+                        </div>
+
+                        <h3>
+                            Clinic OS
+                        </h3>
+
+                        <p>
+                            SaaS healthcare management platform built
+                            with Laravel and Vue, with extensive automated
+                            testing and a modern frontend architecture.
+                        </p>
+
+                        <div>
+                            <span class="tag">Laravel 13</span>
+                            <span class="tag">Vue 3</span>
+                            <span class="tag">TypeScript</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PROJECT -->
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="project-card">
+
+                        <div class="project-icon">
+                            <i class="bi bi-cpu"></i>
+                        </div>
+
+                        <h3>
+                            AI Journey
+                        </h3>
+
+                        <p>
+                            A personal transition from backend engineering
+                            toward Machine Learning, Data Science and
+                            Artificial Intelligence.
+                        </p>
+
+                        <div>
+                            <span class="tag">Python</span>
+                            <span class="tag">ML</span>
+                            <span class="tag">Data</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         SKILLS
+    ========================================== -->
+
+    <section id="skills" class="skills-section">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <div class="small-title">
+                    Navigation
+                </div>
+
+                <h2>
+                    Technical map
+                </h2>
+
+                <p>
+                    The technologies currently on the map.
+                </p>
+
+            </div>
+
+
+            <div class="skill-map">
+
+                <div class="skill-node skill-center">
+                    <i class="bi bi-code-slash me-2"></i>
+                    Software Engineer
+                </div>
+
+                <div class="skill-node">
+                    Laravel
+                </div>
+
+                <div class="skill-node">
+                    PHP
+                </div>
+
+                <div class="skill-node">
+                    MySQL
+                </div>
+
+                <div class="skill-node">
+                    JavaScript
+                </div>
+
+                <div class="skill-node">
+                    Python
+                </div>
+
+                <div class="skill-node">
+                    Machine Learning
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         CONTACT
+    ========================================== -->
+
+    <section id="contact" class="contact-section">
+
+        <div class="container">
+
+            <div class="destination">
+
+                <div class="destination-pin pulse">
+                    <i class="bi bi-geo-alt-fill"></i>
+                </div>
+
+                <h2>
+                    Final destination?
+                </h2>
+
+                <p>
+                    Not really. There are still plenty of places to go.
+                    If you're building something interesting, let's connect.
+                </p>
+
+                <div class="contact-links">
+
+                    <a href="mailto:aiman.asfia@gmail.com">
+                        <i class="bi bi-envelope"></i>
+                        Email
+                    </a>
+
+                    <a
+                        href="https://github.com/asfiaaiman"
+                        target="_blank"
+                    >
+                        <i class="bi bi-github"></i>
+                        GitHub
+                    </a>
+
+                    <a
+                        href="https://www.linkedin.com/in/asfiaaiman/"
+                        target="_blank"
+                    >
+                        <i class="bi bi-linkedin"></i>
+                        LinkedIn
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
     <footer>
-        <p>&copy; 2026 Asfia Aiman. All rights reserved.</p>
+
+        <div>
+            © 2026 Asfia Aiman
+        </div>
+
+        <div class="mt-1">
+            Built with Laravel instincts, Python ambitions and
+            an unreasonable amount of CSS.
+        </div>
+
     </footer>
+
+</div>
+
+
+<!-- Bootstrap JS -->
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+</script>
 
 </body>
 </html>
